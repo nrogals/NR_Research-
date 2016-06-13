@@ -21,8 +21,8 @@ else
 end
 
 if n_model>n
-     new_output_coefficients=extend(output_coefficients, n_model, n); 
-     new_modeled_output_coefficients=modeled_output_coefficients; 
+     [new_output_coefficients]=extend(output_coefficients, n_model, n); 
+     [new_modeled_output_coefficients]=modeled_output_coefficients; 
 else
     if n>n_model
         new_modeled_output_coefficients=extend(modeled_output_coefficients, n, n_model); 

@@ -1,4 +1,4 @@
-function [ output_args ] = extend(coefficients, greater_length, lesser_length)
+function [ coefficients ] = extend(coefficients, greater_length, lesser_length)
 %UNTITLED2 Summary of this function goes here
 %   Detailed explanation goes here
 

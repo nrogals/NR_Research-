@@ -10,11 +10,11 @@
 %   Copyright 1984-2002 The MathWorks, Inc. 
 
 m=2; 
-n=3; 
+n=10; 
 iterates=20; 
 
 m_model=2; 
-n_model=3; 
+n_model=10; 
 
 [input_data, output_data, input_coefficients, output_coefficients] = generate_data(m, n, iterates); 
 display(input_data); 
