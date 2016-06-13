@@ -9,14 +9,12 @@
 
 %   Copyright 1984-2002 The MathWorks, Inc. 
 
-m=2; 
-n=3; 
-iterates=20; 
+m=2
+n=3
+iterates=3
 
-m_model=2; 
-n_model=3; 
 
-[input_data, output_data, input_coefficients, output_coefficients] = generate_data(m, n, iterates); 
+[input_data, output_data, input_coefficients, output_coefficients] = generate_data(m, n, ); 
 display(input_data); 
 display(output_data); 
 display(input_coefficients); 
@@ -26,6 +24,5 @@ vec_output_data= output_data(:);
 %plot(vec_input_data) ; 
 %plot(vec_output_data); 
 
-[coefficients, norm_error]=model_data(m_model, n_model, input_data, output_data); 
+coefficients=model_data(m, n, input_data, output_data); 
 display(coefficients); 
-display(norm_error); 

@@ -1,8 +1,7 @@
-function [coefficients] = model_data(m, n, input_data, output_data)
+function [coefficients, norm_error] = model_data(m, n, input_data, output_data)
 A=[m ; n];
 num_initial_conditions = max(A); 
 coefficients=zeros(m+n); 
-
 
 data_size=size(input_data);
 num_data_entries= data_size(2); 
@@ -37,8 +36,8 @@ for t=1:num_data_entries
     
 end 
 
-display(size(y_t_accum)); 
-display(A); 
-x=A\y_t_accum; 
-
+%display(size(y_t_accum)); 
+%display(A); 
+x=A\y_t_accum ; 
+norm_error=norm(A*x-y_t_accum); 
 coefficients=x; 

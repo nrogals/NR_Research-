@@ -5,7 +5,7 @@ num_initial_conditions = max(A);
 num_data_points = num_initial_conditions + iterates;
 
 input_coefficients = 10*rand(1, m);
-output_coefficients = 10*rand(1, num_data_points);
+output_coefficients = 10*rand(1, n);
 
 
 input_data= 10*rand(1, num_data_points);
@@ -17,7 +17,7 @@ for t= 1:num_data_points
         
     else 
         %Generate data using linear rule
-        display HIT
+        %display HIT
         total_sum = 0; 
         for i=1:m
             %last input coefficient is paired with time t-1
