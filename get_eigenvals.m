@@ -4,10 +4,6 @@ function [ r ] = get_eigenvals(output_coefficients)
 
     poly_input_coeff=-1*output_coefficients; 
     poly_coeff=[1, poly_input_coeff]; 
+    %display(poly_coeff); 
     r=roots(poly_coeff); 
-    scatterplot(r);
-
-    
-    
-end
-
+   
