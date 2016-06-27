@@ -1,4 +1,4 @@
-function [ reccurence_array, reccurence_vector, num_rec_vec_rows ] = generate_vector_reccurence_matrix(data, num_samples, guess_num_modes, num_signals)
+function [ reccurence_matrix, reccurence_vector] = generate_vector_reccurence_matrix(data, num_samples, guess_num_modes, num_signals)
 %UNTITLED8 Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -13,25 +13,27 @@ for t = 1 : (num_samples-guess_num_modes)-1
     accum(t ,: , :) = transpose(row_vector_matrix); 
     %display(accum)
     %display **************
-    recc_vec_accum=[recc_vec_accum ;(data(: , guess_num_modes+t+1))]; 
+    recc_vec_accum=[recc_vec_accum ;(data(: , guess_num_modes+t))]; 
 end
-
+num_recc_vec_rows=(num_samples-guess_num_modes)-1; 
 reccurence_vector=recc_vec_accum; 
-reccurence_array=accum; 
-num_rec_vec_rows=(num_samples-guess_num_modes)-1; 
+reccurence_vector=reshape(reccurence_vector, [1,num_recc_vec_rows*num_signals]); 
+reccurence_array=accum;  
+[flattened_matrix] = flatten( reccurence_array , num_recc_vec_rows , num_signals, guess_num_modes ); 
+reccurence_matrix=flattened_matrix; 
 
-%reccurence_matrix=flatten(reccurence_array , (num_samples-guess_num_modes)-1 , num_signals, guess_num_modes); 
 
 
- 
+
+
+
+
+
+
 
 
 
 %flattened_reccurence_matrix=reshape(reccurence_matrix, 
-
-
-
-
 %{
 
 A = [5 7 8; 0 1 9; 4 3 6];

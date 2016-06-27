@@ -8,13 +8,18 @@ function [updated_row]= get_row_vector(reccurence_array, row_vector, sig_index, 
        ending=(i-1)*sig_num^2+(sig_index+1)*sig_num; 
        
        
-       display(beginning); 
-       display(ending); 
+       %display(beginning); 
+       %display(ending); 
+       %display(sample_index) 
        vals=reccurence_array(sample_index, i, :); 
+       %display 'Past'
        row_vector(beginning:ending)=vals; 
+       %display(row_vector)
        
    end
-   display(row_vector); 
+   %display 'Final Row Vector'
+   %display(row_vector); 
+    %display 'Final Row Vector'
    updated_row=row_vector; 
 
 
