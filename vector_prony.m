@@ -1,4 +1,4 @@
-function [mode_matrix, eigenvalues, recurrence_matrix, recurrence_vector] = vector_prony(data , num_samples, guess_num_modes, num_signals) 
+function [mode_matrix, eigenvalues, recurrence_matrix, recurrence_vector] = vector_prony(data , num_samples, guess_num_modes, num_signals, tikhonov_epsilon) 
 %UNTITLED7 Summary of this function goes here
 %   Detailed explanation goes here
 %data is a matrix where the p,t entry is the pth measurement at time t
@@ -10,7 +10,11 @@ function [mode_matrix, eigenvalues, recurrence_matrix, recurrence_vector] = vect
 
 display(recurrence_matrix); 
 display(recurrence_vector); 
-vector_coefficients=recurrence_matrix\recurrence_vector;
+[row_num, column_num]=size(recurrence_matrix); 
+direction_matrix=eye(column_num); 
+vector_coefficients=least_squares_with_Tikhonov(recurrence_matrix, recurrence_vector, direction_matrix, tikhonov_epsilon); 
+
+
 display(vector_coefficients); 
 [coefficient_matricies, roots ] = get_eigenvalues( vector_coefficients, num_signals, guess_num_modes ) ; 
 
@@ -27,8 +31,12 @@ for t = 1:num_samples
     mode_matrix=[mode_matrix; row_vector];
     observed_mode_vector=[observed_mode_vector ; transpose(data(: , t))]; 
 end
+[num_rows,num_columns]=size(mode_matrix); 
+direction_matrix=eye(num_columns); 
+modes=least_squares_with_Tikhonov(mode_matrix, observed_mode_vector, direction_matrix, tikhonov_epsilon); 
 
-modes=mode_matrix\observed_mode_vector; 
+
+
 display(modes); 
     
     
