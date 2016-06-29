@@ -9,12 +9,14 @@ number_samples=t(2);
 non_dominant=0.00; 
 
 
-reccurence_matrix=generate_reccurence_matrix( samples, number_samples, guessed_number_sinusoids)
-r=number_samples-guessed_number_sinusoids
+reccurence_matrix=generate_reccurence_matrix( samples, number_samples, guessed_number_sinusoids);
+r=number_samples-guessed_number_sinusoids; 
 b=transpose(samples(1, number_samples-r+1:number_samples));
 %display(b); 
-
+display(reccurence_matrix)
+display(samples)
 x=reccurence_matrix\b; 
+display(x); 
 char_poly_roots=get_eigenvals((transpose(x))); 
 %display(char_poly_roots); 
 %display(x); 

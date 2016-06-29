@@ -20,21 +20,16 @@ reccurence_vector=recc_vec_accum;
 
 reccurence_matrix_accumulator=[]; 
 for w= 1:num_recc_vec_rows 
-    row_vector=[];
+    row_vector=[]
     for t=1:guess_num_modes
         addition=accum(w , t , :); 
         row_addition=get_row(addition, num_signals);
-        row_vector=[row_vector , row_addition]; 
-    end
-    reccurence_matrix_accumulator=[reccurence_matrix_accumulator; row_vector]; 
-end
+        row_vector=[row_vector ; row_addition]; 
+        
+        
+        
 
-reccurence_matrix=reccurence_matrix_accumulator; 
-    
-        
-        
-        
-   
+reccurence_array=accum;  
 
 
 

@@ -7,20 +7,12 @@ function [mode_matrix, eigenvalues, recurrence_matrix, recurrence_vector] = vect
 
 
 [recurrence_matrix, recurrence_vector] = generate_vector_reccurence_matrix(data, num_samples, guess_num_modes, num_signals); 
-%display(recurrence_matrix); 
-
-
-rank_of_matrix=rank(recurrence_matrix); 
-display(rank_of_matrix); 
-display(recurrence_matrix) ;
-
-recurrence_vector=transpose(recurrence_vector); 
-%display(recurrence_vector); 
-vector_coefficients=recurrence_matrix\recurrence_vector;
-display(data); 
 
 display(recurrence_matrix); 
-display(recurrence_vector);
+display(recurrence_vector); 
+
+vector_coefficients=recurrence_matrix\recurrence_vector;
+
 display(vector_coefficients); 
 
 

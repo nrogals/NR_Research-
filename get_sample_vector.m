@@ -9,7 +9,7 @@ num_columns=t(2);
 assert (num_columns==num_eigenvals); 
 
 for i=1:num_eigenvals
-    sum=sum+ (exp(eigenvalues(i)*time) + exp(conj(eigenvalues(i))*time)) * coefficient_mode_matrix(:,1); 
+    sum=sum+ (exp(real(eigenvalues(i))*time) * cos(imag(eigenvalues(i))*time)) * coefficient_mode_matrix(:,i); 
 end
 new_vector=sum; 
 
