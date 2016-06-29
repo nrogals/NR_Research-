@@ -19,7 +19,7 @@ complex_roots=polyeig((-1*t_2), (-1*t_1 ),  identity);
 display(complex_roots); 
 
 vector_coefficient_matrix=[];
-eigenvalues=[]; 
+eigenvalues=complex_roots;
 
 
 

@@ -33,8 +33,13 @@ display(modes);
     
     
     
+    
+    
+    
 end
 
+
+mode_matrix=coefficient_matricies; 
 
 
 
