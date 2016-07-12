@@ -2,7 +2,7 @@
 iterates=1000;
 input_vec_length=2;
 A=-0.1*[2 -1 0 ; -1 2 -1 ; 0 -1 2]; 
-display(eig(A))
+
 B=[1 2; -3  4; 5 6]; 
 C=[5 -6 7 ; 8 -9 10 ; 2 4 6; -8 9 2]; 
 D=[0 0; 0 0; 0 0; 0 0]; 
@@ -15,5 +15,12 @@ display(output_data);
 
 data = iddata((output_data), input_data, 1) ; 
 sys=n4sid(data,'best'); 
+
+predicted_A=sys.A; 
+t=eig(predicted_A); 
+w=eig(A); 
+
+
+
 
 
