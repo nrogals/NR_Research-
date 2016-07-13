@@ -9,7 +9,7 @@ for i = 1:num_rows-2
     for t= 1:j
         row(:, t)=transpose(data(i+t-1, :));
     end
-    display(row); 
+    %display(row); 
     hankel_matrix=[hankel_matrix; row] ; 
 end
 
@@ -18,7 +18,7 @@ num_hankel_rows=num_hankel_rows/num_columns;
 i=floor(num_hankel_rows/2)*num_columns;
 display(i); 
 h=i; 
-display(hankel_matrix); 
+%display(hankel_matrix); 
 
 Up=hankel_matrix(1:i, :); 
 Uf=hankel_matrix(i+1:(i+h), :) ; 
