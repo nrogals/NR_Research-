@@ -1,4 +1,4 @@
-function [Q, L]=ql(A)
+function [Q, L]=ql_decomposition_reference(A)
 %
 % Purpose : Compute the QL decomposition of a matrix such that,
 %       Q L = A

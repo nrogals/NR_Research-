@@ -17,12 +17,20 @@ x0=[0; 0 ; 0];
 
 
 new_i=floor(num_rows); 
-j=3; 
-[Up, Up_plus, Uf, Uf_minus] = create_IO_Hankel_Matrix(input_data, j); 
-[Yp, Yp_plus, Yf, Yf_minus]= create_IO_Hankel_Matrix(output_data, j);
+j=4; 
+[Up, Up_plus, Uf, Uf_minus, input_Hankel] = create_IO_Hankel_Matrix(input_data, j); 
+[Yp, Yp_plus, Yf, Yf_minus, output_Hankel]= create_IO_Hankel_Matrix(output_data, j);
 Wp=[Up; Yp];
 Wp_plus=[Up_plus; Yp_plus]; 
 
+
+
+display(input_data);
+display(input_Hankel); 
+display(Up); 
+display(Uf); 
+display(Up_plus); 
+display(Uf_minus); 
 
 
 

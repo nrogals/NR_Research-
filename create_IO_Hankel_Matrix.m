@@ -1,10 +1,10 @@
-function [Up, Up_plus, Uf, Uf_minus] = create_IO_Hankel_Matrix(data, j)
+function [Up, Up_plus, Uf, Uf_minus, Hankel] = create_IO_Hankel_Matrix(data, j)
 %UNTITLED3 Summary of this function goes here
 %   Detailed explanation goes here
 
 [num_rows, num_columns]=size(data); 
 hankel_matrix=[]; 
-for i = 1:num_rows-2
+for i = 1:num_rows-j+1
     row=[]; 
     for t= 1:j
         row(:, t)=transpose(data(i+t-1, :));
@@ -20,6 +20,8 @@ display(i);
 h=i; 
 %display(hankel_matrix); 
 
+
+Hankel=hankel_matrix; 
 Up=hankel_matrix(1:i, :); 
 Uf=hankel_matrix(i+1:(i+h), :) ; 
 Up_plus=hankel_matrix(1:i+num_columns, :); 
