@@ -1,0 +1,16 @@
+function [ eigenvalues, eigenvectors ] = n4sid_cva( output_data )
+%UNTITLED4 Summary of this function goes here
+%   Detailed explanation goes here
+
+
+opt=n4sidOptions('N4Weight', 'CVA'); 
+data = iddata((output_data), []) ; 
+sys=n4sid(data,'best', 'Form', 'modal', opt); 
+[V,D] = eig(A); 
+C=sys.C; 
+eigenvectors=convert_eigenvectors(C, V); 
+eigenvalues=diag(D); 
+
+
+end
+

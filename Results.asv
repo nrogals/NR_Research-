@@ -23,20 +23,10 @@ for i= 1 : number_of_iterates
     %Get data; 
     [samples,time_samples]=get_data(coefficient_mode_matrix, eigenvalues_without_congugate, num_signals, num_eigenvals, time_step, num_samples, noise_variance);
     data=transpose(samples); 
-    
     [eigevnalues, eigenvectors]=n4sid_cva(output_data ); 
-    [eig_error, eig_vec_error]=calculate_error(eigenvalues, eigenvectors, eigenvalues_without_congugate, coefficient_mode_matrix); 
-    
     [eigenvalues, eigenvectors]=n4sid_SSARX(output_data); 
-    [eig_error, eig_vec_error]=calculate_error(eigenvalues, eigenvectors, eigenvalues_without_congugate, coefficient_mode_matrix); 
-    
-    
     [eigenvalues, eigenvectors]=n4sid_MOESP(output_data);
-    [eig_error, eig_vec_error]=calculate_error(eigenvalues, eigenvectors, eigenvalues_without_congugate, coefficient_mode_matrix); 
-    
-    
     [mode_matrix, eigenvalues]=vector_prony(transpose(data), guess_num_modes, 0.00000000000000001); 
-    [eig_error, eig_vec_error]=calculate_error(eigenvalues, eigenvectors, eigenvalues_without_congugate, coefficient_mode_matrix); 
    
     
 end
