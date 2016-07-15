@@ -1,4 +1,4 @@
-function [samples, time_samples] = get_data( coefficient_mode_matrix, eigenvalues, num_signals, num_eigenvals, time_step, number_samples) 
+function [samples, time_samples] = get_data( coefficient_mode_matrix, eigenvalues, num_signals, num_eigenvals, time_step, number_samples, noise_variance) 
 %UNTITLED Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -12,7 +12,7 @@ samples=[];
 time_samples=[]; 
 for i=1:number_samples
     time=i*time_step; 
-    new_sample=get_sample_vector(coefficient_mode_matrix, eigenvalues, num_signals, num_eigenvals, time);
+    new_sample=get_sample_vector(coefficient_mode_matrix, eigenvalues, num_signals, num_eigenvals, time, noise_variance);
     samples=[samples , new_sample]; 
     time_samples(i)=time;
 end 

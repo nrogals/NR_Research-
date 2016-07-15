@@ -1,4 +1,4 @@
-function [mode_matrix, eigenvalues, recurrence_matrix, recurrence_vector] = vector_prony(data , num_samples, guess_num_modes, num_signals, tikhonov_epsilon) 
+function [mode_matrix, eigenvalues] = vector_prony(data , num_samples, guess_num_modes, num_signals, tikhonov_epsilon) 
 %UNTITLED7 Summary of this function goes here
 %   Detailed explanation goes here
 %data is a matrix where the p,t entry is the pth measurement at time t

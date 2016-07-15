@@ -16,7 +16,7 @@ guess_num_modes=2;
 data=get_data( coefficient_mode_matrix, eigenvalues_without_congugate, num_signals, num_eigenvals, time_step, num_samples);
 num_signals=2; 
 
-tikhonov_epsilon=0.000000000000001
+tikhonov_epsilon=0.000000000000001;
 [coefficient_mode_matrix, eigenvalues, reccurence_matrix, reccurence_vector] = vector_prony(data , num_samples, guess_num_modes, num_signals, tikhonov_epsilon); 
 
 
