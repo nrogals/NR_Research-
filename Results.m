@@ -26,17 +26,23 @@ for i= 1 : number_of_iterates
     
     [eigevnalues, eigenvectors]=n4sid_cva(output_data ); 
     [eig_error, eig_vec_error]=calculate_error(eigenvalues, eigenvectors, eigenvalues_without_congugate, coefficient_mode_matrix); 
+    n4sid_cva_error(i)=[eig_error; eig_vec_error];
     
+    %each of the columns is an eigenvector; and there are an array of
+    %eigenvalues
     [eigenvalues, eigenvectors]=n4sid_SSARX(output_data); 
     [eig_error, eig_vec_error]=calculate_error(eigenvalues, eigenvectors, eigenvalues_without_congugate, coefficient_mode_matrix); 
+    n4sid_SSARX_error(i)=[eig_error; eig_vec_error];
     
     
     [eigenvalues, eigenvectors]=n4sid_MOESP(output_data);
     [eig_error, eig_vec_error]=calculate_error(eigenvalues, eigenvectors, eigenvalues_without_congugate, coefficient_mode_matrix); 
+    n4sid_MOESP_error(i)=[eig_error; eig_vec_error]; 
     
     
     [mode_matrix, eigenvalues]=vector_prony(transpose(data), guess_num_modes, 0.00000000000000001); 
     [eig_error, eig_vec_error]=calculate_error(eigenvalues, eigenvectors, eigenvalues_without_congugate, coefficient_mode_matrix); 
+    vector_prony_error=[eig_error; eig_vec_error]; 
    
     
 end

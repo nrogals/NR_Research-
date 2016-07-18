@@ -1,4 +1,4 @@
-function [mode_matrix, eigenvalues] = vector_prony(data , guess_num_modes, tikhonov_epsilon) 
+function [modes, eigenvalues] = vector_prony(data , guess_num_modes, tikhonov_epsilon) 
 %UNTITLED7 Summary of this function goes here
 %   Detailed explanation goes here
 %data is a matrix where the p,t entry is the pth measurement at time t
@@ -19,9 +19,19 @@ display(vector_coefficients);
 [coefficient_matricies, roots ] = get_eigenvalues( vector_coefficients, num_signals, guess_num_modes ) ; 
 
 eigenvalues=[]; 
+previous_eigenvalue=0;
+count=1; 
 for i = 1 : guess_num_modes
-    eigenvalues(i)=log(roots(i)); 
+    current_eigenvalue=log(roots(i)); 
+    if (previous_eigenvalue==conj(current_eigenvalue)) 
+        eigenvalues(count-1)=2*current_eigenvalue; 
+    else 
+        eigenvalues(count)=current_eigenvalue; 
+        previous_eigenvalue=current_eigenvalue; 
+    end 
+    count=count+1; 
 end
+
 
 
 mode_matrix=[]; 
@@ -35,9 +45,6 @@ end
 direction_matrix=eye(num_columns); 
 modes=least_squares_with_Tikhonov(mode_matrix, observed_mode_vector, direction_matrix, tikhonov_epsilon); 
 
-
-
-display(modes); 
     
     
     
