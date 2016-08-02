@@ -12,7 +12,9 @@ for i=1:num_eigenvals
     sum=sum+ (exp(real(eigenvalues(i))*time) * cos(imag(eigenvalues(i))*time)) * coefficient_mode_matrix(:,i); 
     
 end
+display(sum);
 new_vector=sum+normrnd(0, noise_variance, num_signals, 1); 
+display(new_vector); 
 
 
 

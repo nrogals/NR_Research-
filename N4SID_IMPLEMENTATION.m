@@ -1,6 +1,6 @@
 %This the main level script for my implementation of 4SID Algorithms
 
-iterates=10;
+iterates=50;
 input_vec_length=2;
 A=-0.1*[2 -1 0 ; -1 2 -1 ; 0 -1 2]; 
 
@@ -12,21 +12,24 @@ x0=[0; 0 ; 1];
 [num_rows_of_C, num_columns_of_C]=size(C); 
 
 %Get Linear Data
-[input_data, output_data, states ] = Linear_System_Data_Gen(A, B, C, D, x0, iterates, input_vec_length, 1); 
+input_noise_variance=0; 
+input_modifier=1; 
+[input_data, output_data, states ] = Linear_System_Data_Gen(A, B, C, D, x0, iterates, input_vec_length, 0, input_modifier); 
 [num_rows,num_columns]=size(input_data); 
+display(input_data); 
 
+%Select j so Hankel is square
 
-new_i=floor(num_rows); 
-j=3; 
+j=35; 
+display(j); 
+
 [Up, Up_plus, Uf, Uf_minus, input_Hankel] = create_IO_Hankel_Matrix(input_data, j); 
 [Yp, Yp_plus, Yf, Yf_minus, output_Hankel]= create_IO_Hankel_Matrix(output_data, j);
-Wp=[Yp; Up];
+Wp=[Up; Yp];
 Wp_plus=[Up_plus; Yp_plus]; 
 
-display(input_data); 
-display(input_Hankel); 
-display(Up); 
-display(Uf); 
+%display(input_data); 
+display(size(input_Hankel)); 
 
 
 
@@ -37,9 +40,9 @@ display(Uf);
 %O_h_i_new=O_h_i(:, 1:num_rows)*Wp; 
 
 %Project onto input data 
-O_h_i=oblique_projection(Yf, Uf, Wp); 
-O_h_i_plus_one=oblique_projection(Yf_minus, Uf_minus, Wp_plus);
-%display(O_h_i); 
+O_h_i=oblique_projection(Yf,Yp, Uf, Up); 
+O_h_i_plus_one=oblique_projection(Yf_minus, Yp_plus, Uf_minus, Up_plus);
+display(O_h_i); 
 
 
 [num_rows_O_h_i, num_columns_ohi]=size(O_h_i); 
@@ -53,27 +56,27 @@ W2=eye(num_columns_ohi);
 %display(S); 
 [num_rows, num_columns]=size(S); 
 
-%{
-singular_value_epsilon=0; 
+
+singular_value_epsilon=0.1; 
 order=0; 
 for i= 1: min(num_rows, num_columns)
     if (S(i,i)>singular_value_epsilon)
         order=order+1; 
     end
 end
-%}
-%display(S)
-display(S); 
 
 
-tau_h= U*(S.^0.5);
+[num_rows, num_columns]=size(S); 
+S_trunc=S(1:order, 1:order); 
+U_trunc=U(: , 1:order); 
+%display(S_trunc); 
+%display(U_trunc); 
 
-%display(tau_h); 
-%display(tau_h); 
+
+tau_h= U_trunc*S_trunc.^0.5; 
 
 
-
-
+display(tau_h); 
 
 
 
@@ -86,18 +89,17 @@ tau_bar_h=tau_h(num_rows_1+1:end, :);
 w=tau_h(1:end-num_rows_1, :); 
 %display(w);
 %display(A)
-A=w\tau_bar_h;
+A_mat=w\tau_bar_h;
 
-display(eig(A));
-display(A); 
+display(eig(A_mat));
+%display(A_mat); 
+display(eig(A)); 
 
 
 
 %Get the states
 Xi=pinv(tau_h)*O_h_i; 
 Xi_plus_one=pinv(tau_bar_h)*O_h_i_plus_one; 
-
-
 
 
 

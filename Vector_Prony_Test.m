@@ -20,8 +20,8 @@ display(data);
 
 tikhonov_epsilon=0.000000000001;
 [mode_matrix, modeled_eigenvalues] = vector_prony(data, guess_num_modes, tikhonov_epsilon); 
-display(mode_matrix); 
-display(modeled_eigenvalues); 
+%display(mode_matrix); 
+%display(modeled_eigenvalues); 
 
 
  

@@ -14,7 +14,9 @@ C=sys.C;
 
 %transpose data in
 %Fix A to sys.A
-%Fix diag to D
+%Fix diag to 
+
+
 
 end
 

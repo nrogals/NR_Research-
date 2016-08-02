@@ -1,0 +1,29 @@
+%Huber Loss Function 
+
+%Huber Loss Function is given by Ld(a)={abs(a)<d, =0.5a^2 and abs(a)>
+%d*(abs(a)-0.5*d)
+
+
+A=[3 4 ; 5 6 ; 7 8]; 
+B=[8 9 ; -2 5; 7 3]; 
+display(A); 
+display(B); 
+
+%{
+x=A\B; 
+display(x); 
+
+
+if abs(a)<d output_val=0.5*a^2; 
+else
+    output_val=d*(abs(a)-0.5*d); 
+end;
+%}
+
+d=0.25; 
+r=@(a) if (1<0) x=5 ; else x=6 ; end ;
+
+s=r(d); 
+
+X=Huber_Loss_Function( A , B , s); 
+

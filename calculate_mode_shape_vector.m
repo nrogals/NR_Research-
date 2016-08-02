@@ -7,5 +7,5 @@ vector=[];
 for i = 1 : num_rows
     vector=[vector ; (eigenvector(i)/eigenvector(1))]; 
 end
-
+mode_shape_vector=vector; 
 %This will look like something for the eigenvector [3;4], [1, 1.33] 

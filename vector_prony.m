@@ -8,14 +8,14 @@ function [modes, eigenvalues] = vector_prony(data , guess_num_modes, tikhonov_ep
 
 [recurrence_matrix, recurrence_vector] = generate_vector_reccurence_matrix(data, num_samples, guess_num_modes, num_signals); 
 
-display(recurrence_matrix); 
-display(recurrence_vector); 
+%display(recurrence_matrix); 
+%display(recurrence_vector); 
 [row_num, column_num]=size(recurrence_matrix); 
 direction_matrix=eye(column_num); 
 vector_coefficients=least_squares_with_Tikhonov(recurrence_matrix, recurrence_vector, direction_matrix, tikhonov_epsilon); 
 
 
-display(vector_coefficients); 
+%display(vector_coefficients); 
 [coefficient_matricies, roots ] = get_eigenvalues( vector_coefficients, num_signals, guess_num_modes ) ; 
 
 eigenvalues=[]; 

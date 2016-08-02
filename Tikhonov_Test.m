@@ -8,3 +8,4 @@ epsilon=0.000000000000000000001;
 
 y=least_squares_with_Tikhonov(A, b, direction_matrix, epsilon); 
 display(y); 
+

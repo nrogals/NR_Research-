@@ -16,8 +16,8 @@ left_matrix=[matrix_1; epsilon*direction_matrix];
 bottom=zeros(columns, zero_columns); 
 right_matrix=[target_matrix; bottom];
 
-display(left_matrix); 
-display(right_matrix); 
+%display(left_matrix); 
+%display(right_matrix); 
 coeff=left_matrix\right_matrix; 
 
 
