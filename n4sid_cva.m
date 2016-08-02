@@ -4,13 +4,17 @@ function [ eigenvalues, eigenvectors ] = n4sid_cva( output_data )
 
 
 opt=n4sidOptions('N4Weight', 'CVA'); 
-data = iddata((output_data), []) ; 
-sys=n4sid(data,'best', 'Form', 'modal', opt); 
-[V,D] = eig(A); 
+data = iddata(transpose(output_data), []) ; 
+sys=n4sid(data, 4, 'Form', 'canonical', opt); 
 C=sys.C; 
-[eigenvectors, eigenvalues]=convert_eigenvectors(C, V, diag); 
- 
+[V,D] = eig(sys.A); 
 
+[eigenvectors, eigenvalues]=convert_eigenvectors_to_modeshapes(C, V, diag(D)); 
+
+
+%transpose data in
+%Fix A to sys.A
+%Fix diag to D
 
 end
 

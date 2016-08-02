@@ -4,7 +4,7 @@ function [ eigenvalues, eigenvectors ] = n4sid_SSARX( output_data )
 
 
 opt=n4sidOptions('N4Weight', 'SSARX'); 
-data = iddata((output_data), [], 'Form', 'modal') ; 
+data = iddata(transpose(output_data), [], 'Form', 'modal') ; 
 sys=n4sid(data,'best'); 
 A=sys.A;
 [V,D] = eig(A); 

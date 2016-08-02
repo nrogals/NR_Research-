@@ -19,20 +19,11 @@ display(vector_coefficients);
 [coefficient_matricies, roots ] = get_eigenvalues( vector_coefficients, num_signals, guess_num_modes ) ; 
 
 eigenvalues=[]; 
-previous_eigenvalue=0;
-count=1; 
-for i = 1 : guess_num_modes
+[num_rows, num_columns]=size(roots); 
+for i = 1 : num_rows
     current_eigenvalue=log(roots(i)); 
-    if (previous_eigenvalue==conj(current_eigenvalue)) 
-        eigenvalues(count-1)=2*current_eigenvalue; 
-    else 
-        eigenvalues(count)=current_eigenvalue; 
-        previous_eigenvalue=current_eigenvalue; 
-    end 
-    count=count+1; 
+    eigenvalues(i)=current_eigenvalue; 
 end
-
-
 
 mode_matrix=[]; 
 observed_mode_vector = [] ; 
@@ -44,10 +35,8 @@ end
 [num_rows,num_columns]=size(mode_matrix); 
 direction_matrix=eye(num_columns); 
 modes=least_squares_with_Tikhonov(mode_matrix, observed_mode_vector, direction_matrix, tikhonov_epsilon); 
+modes=transpose(modes); 
 
-    
-    
-    
 end
 
 

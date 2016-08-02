@@ -1,19 +1,10 @@
-function [ eig_error, eig_vec_error, x ] = calculate_error(modeled_eigenvalues, modeled_eigenvectors, actual_eigenvalues, actual_eigenvectors)
+function [ eig_error, eig_vec_error, x ] = calculate_error( actual_eigenvalues, actual_eigenvectors, modeled_eigenvalues, modeled_eigenvectors  )
 %UNTITLED Summary of this function goes here
 %   Detailed explanation goes here
 
 
 [num_signals_eigenvectors, num_eigenvectors]= size(actual_eigenvectors); 
 [num_signals_actual_eigenvectors, num_actual_eigenvectors]=size(modeled_eigenvectors); 
-
-display(modeled_eigenvectors); 
-display(actual_eigenvectors);
-display(actual_eigenvalues); 
-display(modeled_eigenvalues); 
-
-
-
-
 assert (num_signals_eigenvectors==num_signals_actual_eigenvectors); 
 assert (num_eigenvectors==num_actual_eigenvectors); 
 
