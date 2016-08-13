@@ -19,17 +19,13 @@ h=i;
 %display(hankel_matrix); 
 Hankel=hankel_matrix;
 
-if (flag==0)
-    Up=hankel_matrix(1:i, :); 
-    Uf=hankel_matrix(i+1:(i+h), :) ; 
-    Up_plus=hankel_matrix(1:i+num_columns, :); 
-    Uf_minus=hankel_matrix(i+num_columns+1:(i+h), :);
+
+Up=hankel_matrix(1:i, :); 
+Uf=hankel_matrix(i+1:(i+h), :) ; 
+Up_plus=hankel_matrix(1:i+num_columns, :); 
+Uf_minus=hankel_matrix(i+num_columns+1:(i+h), :);
     
-else
-    Up=hankel_matrix(1:i, :); 
-    Uf=hankel_matrix(i+1:(i+h), :) ; 
-    Up_plus=hankel_matrix(1:i+num_columns, :); 
-    Uf_minus=hankel_matrix(i+num_columns+1:(i+h), :);
+
     
 end
 

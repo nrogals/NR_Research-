@@ -6,10 +6,12 @@ function [ eig_error, eig_vec_error, x ] = calculate_error(modeled_eigenvalues, 
 [num_signals_eigenvectors, num_eigenvectors]= size(actual_eigenvectors); 
 [num_signals_actual_eigenvectors, num_actual_eigenvectors]=size(modeled_eigenvectors); 
 
-%display(modeled_eigenvectors); 
-%display(actual_eigenvectors);
-%display(actual_eigenvalues); 
-%display(modeled_eigenvalues); 
+display(modeled_eigenvectors); 
+display(actual_eigenvectors);
+display(modeled_eigenvalues); 
+display(actual_eigenvalues); 
+
+
 
 
 
@@ -73,13 +75,14 @@ for i=1:num_columns
     conj_vector=conj(vector); 
     eig_diff_1=abs((actual_eigenvalues(i)-vector)/actual_eigenvalues(i)); 
     eig_diff_2=abs((actual_eigenvalues(i)-conj_vector)/actual_eigenvalues(i)); 
-    display(actual_eigenvalues(i)); 
-    display(modeled_eigenvalues(matching(i))); 
-    display(actual_eigenvalues(i)-modeled_eigenvalues(matching(i))); 
-    display(eig_diff_1); 
-    display(eig_diff_2); 
+    %display(actual_eigenvalues(i)); 
+    %display(modeled_eigenvalues(matching(i))); 
+    %display(actual_eigenvalues(i)-modeled_eigenvalues(matching(i))); 
+    %display(eig_diff_1); 
+    %display(eig_diff_2); 
     eigenvalue_error=eigenvalue_error+min(eig_diff_1,eig_diff_2);  
 end
+
 
 eigenvector_error=eigenvector_error/num_columns; 
 eigenvalue_error=eigenvalue_error/num_columns; 

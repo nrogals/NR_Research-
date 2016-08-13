@@ -1,11 +1,11 @@
-function [ eigenvalues, eigenvectors ] = n4sid_MOESP( output_data )
+function [ eigenvalues, eigenvectors ] = n4sid_MOESP( output_data, order )
 %UNTITLED4 Summary of this function goes here
 %   Detailed explanation goes here
 
 
 opt=n4sidOptions('N4Weight', 'MOESP'); 
 data = iddata(transpose(output_data), []) ; 
-sys=n4sid(data, 4, 'Form', 'canonical', opt); 
+sys=n4sid(data, order, 'Form', 'canonical', opt); 
 C=sys.C; 
 [V,D] = eig(sys.A); 
 

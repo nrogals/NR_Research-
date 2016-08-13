@@ -1,4 +1,4 @@
-function [ output_val ] = Huber_weigting_function(x , fun_handle)
+function [ sum ] = Huber_weigting_function(x , fun_handle)
 %UNTITLED5 Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -11,8 +11,12 @@ sum=0;
 for i = 1 : num_rows
     a=x(i);
     output_val=fun_handle(a); 
+    
     sum=sum+output_val; 
 end
+
+
+
 
 
 

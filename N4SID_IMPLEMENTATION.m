@@ -14,7 +14,8 @@ x0=[0; 0 ; 1];
 %Get Linear Data
 input_noise_variance=0; 
 input_modifier=1; 
-[input_data, output_data, states ] = Linear_System_Data_Gen(A, B, C, D, x0, iterates, input_vec_length, 0, input_modifier); 
+%(A, B, C, D, K, x0, iterates, input_vec_length, indicator, input_modifier, observation_variance_param, state_variance_param, model_indicator)
+[input_data, output_data, states ] = Linear_System_Data_Gen(A, B, C, D, [],  x0,  iterates, input_vec_length, 0, input_modifier, 0); 
 [num_rows,num_columns]=size(input_data); 
 display(input_data); 
 
