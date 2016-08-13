@@ -1,4 +1,4 @@
-function [ eigenvalues, eigenvectors ] = n4sid_SSARX( output_data )
+function [ eigenvalues, eigenvectors ] = n4sid_SSARX( output_data, order )
 %UNTITLED4 Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -7,7 +7,7 @@ function [ eigenvalues, eigenvectors ] = n4sid_SSARX( output_data )
 opt=n4sidOptions('N4Weight', 'SSARX'); 
 data = iddata(transpose(output_data), []) ; 
 display(output_data); 
-sys=n4sid(data, 4, 'Form', 'free', opt); 
+sys=n4sid(data, order, 'Form', 'free', opt); 
 
 C=sys.C; 
 [V,D] = eig(sys.A); 

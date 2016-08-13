@@ -1,8 +1,8 @@
-function [eigenvalues,  eigenvectors ] = SSARX_MLR( input_data, output_data, p, f, minimum_singular_value, fixed_order)
-%UNTITLED5 Summary of this function goes here
+function [ eigenvalues, eigenvectors ] = SSARX_Parabolic_LOSS(input_data, output_data, p, f)
+%UNTITLED Summary of this function goes here
 %   Detailed explanation goes here
 
-[Up Yp Yf Yf_hankel, Uf_hankel]=create_Hankel_SSARX( input_data, output_data , p, f ); 
+[Up Yp Yf Yf_hankel Uf_hankel]=create_Hankel_SSARX( input_data, output_data , p, f ); 
 Wp=[Up ; Yp]; 
 
 
@@ -12,9 +12,13 @@ Wp=[Up ; Yp];
 [num_rows, num_columns_input] = size(input_data); 
 [num_rows, num_columns_output]=size(output_data);
 
+x0=zeros(num_columns_output, p*num_columns_input+p*num_columns_output); 
 
+fun=@(a) abs(a); 
+O_matrix= Huber_Loss_Function_Function(Wp, Yf, fun, x0);
+%O_matrix=Yf*transpose(Wp)*pinv(Wp*transpose(Wp)); 
 
-O_matrix=Yf*transpose(Wp)*pinv(Wp*transpose(Wp)); 
+%Huber_Loss_Function_Function( A , B , s, x0);
 
 E_f= Yf - O_matrix* Wp; 
 
@@ -129,6 +133,7 @@ OX=phi_matrix*Yf_hankel - beta_matrix*Uf_hankel-error_hankel_matrix;
 
 [U,S,V] = svd(OX); 
 [num_rows, num_columns]=size(S); 
+minimum_singular_value=10; 
 order=0; 
 for i = 1 : min(num_rows, num_columns)
     if (S(i,i)>minimum_singular_value)
@@ -136,13 +141,7 @@ for i = 1 : min(num_rows, num_columns)
     end
 end
 
-if (fixed_order<0)
-    b=4; 
-else
-    order=fixed_order; 
-end
-
-
+order=3; 
 
 U_1=U(:, 1:order); 
 tau=U_1; 
@@ -221,12 +220,10 @@ display(eig(A));
 
 
 [V , D]=eig(A); 
-[eigenvectors_1, eigenvalues_1]=convert_eigenvectors_to_modeshapes(C, V, diag(D)); 
-eigenvalues=eigenvalues_1; 
-eigenvectors=eigenvectors_1; 
-
-
+[eigenvectors, eigenvalues]=convert_eigenvectors_to_modeshapes(C, V, diag(D)); 
 
 
 end
+
+
 

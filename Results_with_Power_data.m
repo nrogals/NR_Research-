@@ -1,12 +1,13 @@
-coefficient_mode_matrix=[8 4 ; 
-                         -7 16 ]; 
-eigenvalues_without_congugate=[-0.1+0.6j -0.05+ 0.3j]; 
-num_eigenvals=2; 
-num_signals=2;
+%n4sid
+
+load 9busContig1.mat
+
+[coefficient_mode_matrix, eigenvalues]=generate_linearizied_results(data); 
+
+
 time_step=1; 
 num_samples=60; 
-order=4; 
-
+guess_num_modes=2; 
   
 number_of_iterates=10;
 
@@ -36,8 +37,8 @@ SSARX_Tukey_Biweight_LOSS_error_mean_eigenvector_list=[];
 
 
 %noise_model='Normal';
-noise_model='Normal'; 
-probability_of_outlier=0.0; 
+noise_model='Normal_with_Outliers'; 
+probability_of_outlier=0.1; 
 outlier_magnitude=10; 
 
 initial_noise_variance=0.00000000000000000001; 
@@ -68,19 +69,11 @@ minimum_singular_value=1;
 outlier_value=10; 
 %d in the literature 
 
-%Pruning probailities 
-probability_outlier_1=0.1; 
-
-probability_outlier_2=0.1; 
-
-
-
 p=5;
 %In SSARX
 j=5; 
 
 f=3; 
-
 
 
 doubled_coefficient_mode_matrix=[]; 
@@ -96,7 +89,6 @@ for i= 1 : number_of_iterates
     %Get data; 
     
     [samples,time_samples]=get_data(coefficient_mode_matrix, eigenvalues_without_congugate, num_signals, num_eigenvals, time_step, num_samples, noise_parameters, noise_model);
-    
     data=(samples); 
     output_data=samples; 
     [num_rows, num_columns]=size(output_data); 
@@ -104,14 +96,14 @@ for i= 1 : number_of_iterates
     
     
     %n4sid_cva
-    [eigenvalues, eigenvectors]=n4sid_cva(output_data, order ); 
+    [eigenvalues, eigenvectors]=n4sid_cva(output_data ); 
     [eig_error, eig_vec_error]=calculate_error(eigenvalues, eigenvectors, doubled_eigenvalues, doubled_coefficient_mode_matrix); 
     n4sid_cva_error=[n4sid_cva_error [eig_error; eig_vec_error]];
     
     
     %n4sid_SSARX
     try
-        [eigenvalues, eigenvectors]=n4sid_SSARX(output_data, order); 
+        [eigenvalues, eigenvectors]=n4sid_SSARX(output_data); 
         [eig_error, eig_vec_error]=calculate_error(eigenvalues, eigenvectors, doubled_eigenvalues, doubled_coefficient_mode_matrix); 
         n4sid_SSARX_error=[n4sid_SSARX_error [eig_error; eig_vec_error]];
     catch 
@@ -120,13 +112,13 @@ for i= 1 : number_of_iterates
     
     
     %n4sid_MOESP
-    [eigenvalues, eigenvectors]=n4sid_MOESP(output_data, order);
+    [eigenvalues, eigenvectors]=n4sid_MOESP(output_data);
     [eig_error, eig_vec_error]=calculate_error(eigenvalues, eigenvectors, doubled_eigenvalues, doubled_coefficient_mode_matrix); 
     n4sid_MOESP_error=[n4sid_MOESP_error [eig_error; eig_vec_error]]; 
     
     
     %Vector PRONY
-    [eigenvectors, eigenvalues]=vector_prony_with_scalar_fitting((data), order, tikhonov_regularization); 
+    [eigenvectors, eigenvalues]=vector_prony((data), guess_num_modes, tikhonov_regularization); 
     [num_rows, num_columns]=size(eigenvectors); 
     mode_shape_eigenvectors=[]; 
     for r = 1 : num_columns
@@ -141,26 +133,25 @@ for i= 1 : number_of_iterates
    
     
     %SSARX_MLR
-    [eigenvalues, eigenvectors] = SSARX_MLR( input_data, output_data, p, f, minimum_singular_value, order); 
+    [eigenvalues, eigenvectors] = SSARX_MLR( input_data, output_data, p, f, minimum_singular_value); 
     [eig_error, eig_vec_error]=calculate_error(eigenvalues, eigenvectors, doubled_eigenvalues, doubled_coefficient_mode_matrix);
     SSARX_MLR_error=[SSARX_MLR_error [eig_error; eig_vec_error]]; 
     
     
     %SSARX_HUBER_LOSS
-    [eigenvalues, eigenvectors ] = SSARX_HUBER_LOSS( input_data, output_data, p, f, minimum_singular_value, outlier_value, order, probability_outlier_1, probability_outlier_2); 
+    [eigenvalues, eigenvectors ] = SSARX_HUBER_LOSS( input_data, output_data, p, f, minimum_singular_value, outlier_value); 
     [eig_error, eig_vec_error]=calculate_error(eigenvalues, eigenvectors, doubled_eigenvalues, doubled_coefficient_mode_matrix); 
     SSARX_HUBER_LOSS_error=[SSARX_HUBER_LOSS_error [eig_error; eig_vec_error]]; 
     
     %SSARX_Parabolic_LOSS
-    [eigenvalues, eigenvectors ] = SSARX_Parabolic_LOSS( input_data, output_data, p, f, minimum_singular_value, order, probability_outlier_1, probability_outlier_2); 
+    [eigenvalues, eigenvectors ] = SSARX_Parabolic_LOSS( input_data, output_data, p, f, minimum_singular_value); 
     [eig_error, eig_vec_error]=calculate_error(eigenvalues, eigenvectors, doubled_eigenvalues, doubled_coefficient_mode_matrix);
     SSARX_Parabolic_LOSS_error=[SSARX_Parabolic_LOSS_error [eig_error; eig_vec_error]]; 
     
      %SSARX_Tukey_Biweight_LOSS
-    [eigenvalues, eigenvectors] = SSARX_Tukey_Biweight_LOSS( input_data, output_data, p, f, minimum_singular_value, outlier_value, order, probability_outlier_1, probability_outlier_2); 
+    [eigenvalues, eigenvectors] = SSARX_Tukey_Biweight_LOSS( input_data, output_data, p, f, minimum_singular_value, outlier_value); 
     [eig_error, eig_vec_error]=calculate_error(eigenvalues, eigenvectors, doubled_eigenvalues, doubled_coefficient_mode_matrix);
     SSARX_Tukey_Biweight_LOSS_error=[SSARX_Tukey_Biweight_LOSS_error [eig_error; eig_vec_error]]; 
-    
 end
 
 
@@ -223,57 +214,5 @@ display(SSARX_Parabolic_LOSS_error_mean_eigenvalue_list);
 display(SSARX_Tukey_Biweight_LOSS_error_mean_eigenvalue_list); 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-%{
-
-display(n4sid_SSARX_error_eigenvalues_list);
-display(n4sid_MOESP_error_mean_eigenvalues_list); 
-display(n4sid_cva_error_eigenvalues_list); 
-display(n4sid_vector_prony_error_mean_eigenvalue_list);
-
-display(n4sid_cva_error_mean_eigenvector_list); 
-display(n4sid_SSARX_error_mean_eigenvector_list); 
-display(n4sid_MOESP_error_mean_eigenvalues_list); 
-display(n4sid_vector_prony_error_mean_eigenvector_list);
-
-plot(noise_variances, n4sid_SSARX_error_eigenvalues_list, 'color', 'r'); hold on; 
-plot(noise_variances, n4sid_MOESP_error_mean_eigenvalues_list, 'color', 'b'); hold on; 
-plot (noise_variances, n4sid_MOESP_error_mean_eigenvalues_list, 'color', 'g'); hold on; 
-plot(noise_variances, n4sid_vector_prony_error_mean_eigenvalue_list, 'color', 'y'); 
-
-
-%}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-   
 
 

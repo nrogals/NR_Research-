@@ -1,8 +1,8 @@
-function [eigenvalues,  eigenvectors ] = SSARX_MLR( input_data, output_data, p, f, minimum_singular_value, fixed_order)
-%UNTITLED5 Summary of this function goes here
+function [ eigenvalues, eigenvectors ] = SSARX_HUBER_LOSS(input_data, output_data, minimum_singular_value, p, f, d, fixed_order,  probability_outlier_1, probability_outlier_2)
+%UNTITLED Summary of this function goes here
 %   Detailed explanation goes here
 
-[Up Yp Yf Yf_hankel, Uf_hankel]=create_Hankel_SSARX( input_data, output_data , p, f ); 
+[Up Yp Yf Yf_hankel Uf_hankel]=create_Hankel_SSARX( input_data, output_data , p, f ); 
 Wp=[Up ; Yp]; 
 
 
@@ -12,12 +12,21 @@ Wp=[Up ; Yp];
 [num_rows, num_columns_input] = size(input_data); 
 [num_rows, num_columns_output]=size(output_data);
 
+x0=zeros(num_columns_output, p*num_columns_input+p*num_columns_output); 
 
+fun=@(e)@(a) Huber(a , e); 
+WP_trans=transpose(Wp); 
+Yf_trans=transpose(Yf); 
+x0=transpose(x0); 
 
-O_matrix=Yf*transpose(Wp)*pinv(Wp*transpose(Wp)); 
+O_matrix_trans= Huber_Loss_Function_Function(WP_trans, Yf_trans, fun, x0, probability_outlier_1, probability_outlier_2);
+O_matrix=transpose(O_matrix_trans); 
+
+O_matrix_2=Yf*transpose(Wp)*pinv(Wp*transpose(Wp)); 
+
+%Huber_Loss_Function_Function( A , B , s, x0);
 
 E_f= Yf - O_matrix* Wp; 
-
 %display(O_matrix); 
 %phi_matrix=get_phi_beta_matricies(O_matrix, 0, 2, num_columns_output, num_columns_input, p); 
 
@@ -136,13 +145,12 @@ for i = 1 : min(num_rows, num_columns)
     end
 end
 
+
 if (fixed_order<0)
     b=4; 
 else
     order=fixed_order; 
 end
-
-
 
 U_1=U(:, 1:order); 
 tau=U_1; 

@@ -19,6 +19,7 @@ input_modifier=1;
 observation_variance=0.01; 
 %state_noise_variance is useless
 state_noise_variance=0.0000000000; 
+minimum_singular_value=0.1; 
 iterates=100; 
 input_vec_length=2;
 model_indicator=1; 
@@ -27,7 +28,7 @@ model_indicator=1;
 
 p=4; 
 f=3; 
-[eigenvalues, eigenvectors]=SSARX_MLR(input_data, output_data, p , f); 
+[eigenvalues, eigenvectors]=SSARX_MLR(input_data, output_data, p , f , minimum_singular_value); 
 display(eigenvalues); 
 display(eigenvectors);
 
