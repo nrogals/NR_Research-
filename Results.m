@@ -1,14 +1,36 @@
+%The script outlines my results for a number of different algorithms
+%namely, CVA, SSARX, MOESP, Vector Prony, SSARX MLR, SSARX Huber Loss
+%Function, SSARX Parabolic Loss, SSARX Tukey Biweight
+
+
+
+%Represent the v_i
 coefficient_mode_matrix=[8 4 ; 
                          -7 16 ]; 
-eigenvalues_without_congugate=[-0.1+0.6j -0.05+ 0.3j]; 
-num_eigenvals=2; 
-num_signals=2;
+[num_rows, num_columns]=size(coefficient_mode_matrix); 
+%Represent the eigenvalues lambda_i
+eigenvalues_without_congugate=[-0.002+0.6j -0.001+ 0.3j]; 
+%eigenvalues without conjugate. Signal constructed with these eigenvalues
+%and their conjugate
+num_eigenvals=num_columns; 
+num_signals=num_rows;
 time_step=1; 
-num_samples=60; 
+%Broken. Must always be 1 
+%Number of data points provided to the algorithm
+num_samples=50; 
+ 
+%Order of the fit. Number of eigenvalues returned
 order=4; 
 
-  
-number_of_iterates=10;
+%Number of trials run with different noise
+number_of_iterates=20;
+
+%Noise Model. Normal represents p=1 in the paper. Normal_with_outliers
+%represents p=probability_of_outlier. Alpha, standard deviaiton of broken
+%distribution, = outlier_mangnitude
+noise_model='Normal_with_Outliers'; 
+probability_of_outlier=0.1; 
+outlier_magnitude=10; 
 
 n4sid_cva_error_eigenvalues_list=[]; 
 n4sid_cva_error_mean_eigenvector_list=[]; 
@@ -35,18 +57,19 @@ SSARX_Tukey_Biweight_LOSS_error_mean_eigenvector_list=[];
 
 
 
-%noise_model='Normal';
-noise_model='Normal'; 
-probability_of_outlier=0.0; 
-outlier_magnitude=10; 
 
-initial_noise_variance=0.00000000000000000001; 
+initial_noise_variance=0.000000000001; 
+%Intial noise_variance lambda = initial_noise_variance
 noise_variance=initial_noise_variance; 
-noise_parameters=[initial_noise_variance; probability_of_outlier; outlier_magnitude]; 
-%noise_parameters
-num_noise_steps=10; 
+noise_parameters=[noise_variance; probability_of_outlier; outlier_magnitude]; 
+num_noise_steps=20; 
+noise_multiplier=10; 
+noise_variances=[]; 
+%noise_variance(i+1)=noise_variances(i)*noise_multiplier
+
 
 for i = 1:num_noise_steps
+%steps through the various noise_levels
 vector_prony_error=[]; 
 n4sid_SSARX_error=[]; 
 n4sid_MOESP_error=[]; 
@@ -57,29 +80,34 @@ SSARX_Parabolic_LOSS_error=[];
 SSARX_Tukey_Biweight_LOSS_error=[]; 
 
 
-noise_variance=initial_noise_variance*3.333^i; 
+noise_variance=initial_noise_variance*noise_multiplier^i; 
 noise_variances(i)=(noise_variance); 
-
+noise_parameters=[noise_variance; probability_of_outlier; outlier_magnitude]; 
 
 %Settings:
 tikhonov_regularization=0.00000000000000001; 
 minimum_singular_value=1; 
-%determines how much we want to keep of information. 
+%determines how much we want to keep of information if order is not set. 
 outlier_value=10; 
-%d in the literature 
+%outlier_value is the residual parameter set for Huber and 
 
 %Pruning probailities 
 probability_outlier_1=0.1; 
-
+%Probablitiy of gross error. Prune the higher variance distriubtion where
+%probability is 1-p
 probability_outlier_2=0.1; 
+%Probability of gross error second distribution. Prune what left. 
 
 
 
 p=5;
-%In SSARX
-j=5; 
+%In SSARX xxx, p is the the guess at when A^p~0, where A is the state
+%progration matrix. f is the number of markove parameters that the Ox space
+%relies on. Assert f=<p
 
-f=3; 
+f=3;
+
+assert (f<=p); 
 
 
 
@@ -95,7 +123,7 @@ end
 for i= 1 : number_of_iterates 
     %Get data; 
     
-    [samples,time_samples]=get_data(coefficient_mode_matrix, eigenvalues_without_congugate, num_signals, num_eigenvals, time_step, num_samples, noise_parameters, noise_model);
+    [samples, noise_free_samples, time_samples]=get_data(coefficient_mode_matrix, eigenvalues_without_congugate, num_signals, num_eigenvals, time_step, num_samples, noise_parameters, noise_model);
     
     data=(samples); 
     output_data=samples; 
@@ -138,7 +166,12 @@ for i= 1 : number_of_iterates
     %Transpose data for input to SSARX_<XXX>
     input_data=transpose(input_data); 
     output_data=transpose(output_data); 
-   
+    
+    %display(input_data); 
+    %display(output_data); 
+    %display(p); 
+    %display(f); 
+    
     
     %SSARX_MLR
     [eigenvalues, eigenvectors] = SSARX_MLR( input_data, output_data, p, f, minimum_singular_value, order); 
@@ -187,12 +220,6 @@ vector_prony_error_mean_eigenvectors=mean(vector_prony_error(2, :));
 n4sid_vector_prony_error_mean_eigenvalue_list=[vector_prony_error_mean_eigenvalues n4sid_vector_prony_error_mean_eigenvalue_list]; 
 n4sid_vector_prony_error_mean_eigenvector_list=[vector_prony_error_mean_eigenvectors n4sid_vector_prony_error_mean_eigenvector_list];
 
-
-vector_prony_error_mean_eigenvalues=mean(vector_prony_error(1, :)); 
-vector_prony_error_mean_eigenvectors=mean(vector_prony_error(2, :)); 
-n4sid_vector_prony_error_mean_eigenvalue_list=[vector_prony_error_mean_eigenvalues n4sid_vector_prony_error_mean_eigenvalue_list]; 
-n4sid_vector_prony_error_mean_eigenvector_list=[vector_prony_error_mean_eigenvectors n4sid_vector_prony_error_mean_eigenvector_list];
-
 SSARX_MLR_error_mean_eigenvalues=mean(SSARX_MLR_error(1, :)); 
 SSARX_MLR_error_mean_eigenvectors=mean(SSARX_MLR_error(2, :)); 
 SSARX_MLR_error_mean_eigenvalue_list=[SSARX_MLR_error_mean_eigenvalues SSARX_MLR_error_mean_eigenvalue_list]; 
@@ -216,14 +243,33 @@ SSARX_Tukey_Biweight_LOSS_error_mean_eigenvector_list=[SSARX_Tukey_Biweight_LOSS
 
 end 
 
+
+
+%{
+display(n4sid_vector_prony_error_mean_eigenvalue_list); 
+display(n4sid_cva_error_eigenvalues_list); 
 display(n4sid_SSARX_error_eigenvalues_list); 
 display(SSARX_MLR_error_mean_eigenvalue_list); 
 display(SSARX_HUBER_LOSS_error_mean_eigenvalue_list); 
 display(SSARX_Parabolic_LOSS_error_mean_eigenvalue_list); 
-display(SSARX_Tukey_Biweight_LOSS_error_mean_eigenvalue_list); 
+display(SSARX_Tukey_Biweight_LOSS_error_mean_eigenvalue_list);
+display(noise_variances); 
+%}
 
+%mean_eigenvector list is the error in the modeshapes. THe modeshape is
+%gotten by normalizing on the first entry. So if the the vi is [2 ; 3]. The
+%n the mode shape is [1; 1.5]. The mean_eigenvector(i) is the average
+%error over all the trials where the noise is noise_varainces(i) 
 
-
+display(n4sid_cva_error_mean_eigenvector_list); 
+display(n4sid_SSARX_error_mean_eigenvector_list); 
+display(n4sid_MOESP_error_mean_eigenvector_list); 
+display(n4sid_vector_prony_error_mean_eigenvector_list); 
+display(SSARX_MLR_error_mean_eigenvector_list); 
+display(SSARX_HUBER_LOSS_error_mean_eigenvector_list); 
+display(SSARX_Parabolic_LOSS_error_mean_eigenvector_list); 
+display(SSARX_Tukey_Biweight_LOSS_error_mean_eigenvector_list); 
+display(noise_variances); 
 
 
 
