@@ -33,7 +33,7 @@ for i=1:iterates
     
     state_noise=[]; 
     
-    display(observed_state_noise);
+    %display(observed_state_noise);
     
     for r = 1 : state_vec_length
         s=state_variance_param;
@@ -48,11 +48,10 @@ for i=1:iterates
     
     
     actual_next_state=state+state_noise; 
-    %display(state); 
-    %display(state_noise);
-    %display(actual_next_state); 
     
-    states=[states; actual_next_state ]; 
+    
+    
+    states=[states actual_next_state ]; 
     state=actual_next_state; 
     input_data=[input_data; transpose(input)]; 
     output_data=[output_data; transpose(actual_observed_state)];  

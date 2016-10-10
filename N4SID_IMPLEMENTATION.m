@@ -6,7 +6,7 @@ A=-0.1*[2 -1 0 ; -1 2 -1 ; 0 -1 2];
 
 B=[1 2; -3  4; 5 6]; 
 C=[5 -6 7 ; 8 -9 10 ; 2 4 6; -8 9 2]; 
-D=[0 0; 0 0; 0 0; 0 0]; 
+D=[0 1; 0 0; 0 0; 1 0]; 
 x0=[0; 0 ; 1];
 
 [num_rows_of_C, num_columns_of_C]=size(C); 
@@ -14,15 +14,28 @@ x0=[0; 0 ; 1];
 %Get Linear Data
 input_noise_variance=0; 
 input_modifier=1; 
+
+is_there_input=1; 
+%No input 
 %(A, B, C, D, K, x0, iterates, input_vec_length, indicator, input_modifier, observation_variance_param, state_variance_param, model_indicator)
-[input_data, output_data, states ] = Linear_System_Data_Gen(A, B, C, D, [],  x0,  iterates, input_vec_length, 0, input_modifier, 0); 
+[input_data, output_data, states ] = Linear_System_Data_Gen(A, B, C, D, [],  x0,  iterates, input_vec_length, is_there_input, input_modifier, 0, 0 , 0); 
+
+
+%display(input_data); 
+%assert(1<0); 
+
+
+
+
+%function [input_data, output_data, states ] = Linear_System_Data_Gen(A, B, C, D, K, x0, iterates, input_vec_length, indicator, input_modifier, observation_variance_param, state_variance_param, model_indicator)
+
 [num_rows,num_columns]=size(input_data); 
-display(input_data); 
+
 
 %Select j so Hankel is square
 
 j=35; 
-display(j); 
+
 
 [Up, Up_plus, Uf, Uf_minus, input_Hankel] = create_IO_Hankel_Matrix(input_data, j); 
 [Yp, Yp_plus, Yf, Yf_minus, output_Hankel]= create_IO_Hankel_Matrix(output_data, j);
@@ -30,7 +43,11 @@ Wp=[Up; Yp];
 Wp_plus=[Up_plus; Yp_plus]; 
 
 %display(input_data); 
-display(size(input_Hankel)); 
+
+
+
+
+
 
 
 
